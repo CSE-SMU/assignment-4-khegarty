@@ -1,9 +1,122 @@
-<html>
+
+<!doctype html>
+<html lang = "en" ng-app = "ToDo">
   <head>
-    <title>Todo Application</title>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
+  	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+  	<link rel="stylesheet" type="text/css" href="style.css">
+  	<meta charset = "UTF-8">
+    <title>Todo Application</title>
+    <style>
+    .done{text-decoration: line-through;color: #ccc;}
+    </style> 
   </head>
-  <body>
+
+
+ <body>
+ 	<img src="https://i.ytimg.com/vi/CK47s8JwMuI/maxresdefault.jpg"
+  style="width:150%;height:150%;">
+  		<div class="card-img-overlay">
+      		<div class = "container">
+        		<div class="card-block" >
+        			<div ng-controller = "todoController">
+
+ 								<div class = "row">
+ 									<div class = "col-sm-2 m-l-2.5">
+ 								<form name = form ng-submit = "addTodo()">
+ 								<input type ="text" name= "newtodo" ng-model="newtodo" placeholder = "Input title of task" required/>
+ 								<div ng-show="form.newtodo.$touched">
+ 								<div class = "TitleError">
+ 								<div ng-show= "form.newtodo.$error.required">
+ 									<font color= "white">Please enter title of task</font>
+ 								</div>
+ 								</div>
+ 								</div>
+ 								
+ 								<input type = "text" name="description" ng-model="description" placeholder = "Input description" required/>
+ 								<div ng-show="form.description.$touched">
+ 									<div class = "DescriptionError">
+ 									<div ng-show= "form.newtodo.$error.required">
+ 									<font color= "white">Please enter description of new task
+ 								</font></div>
+ 							</div>
+ 								</div>
+ 							
+
+ 								<font color="white">
+								Enter due date:<br></font>
+								<input type="date" name="date" ng-model="date" min="2016-02-10" required/><br><br>
+								<div ng-show="form.date.$touched">
+									<div class = "DateError">
+ 								<div ng-show= "form.date.$error.required"><font color= "white">Please enter date of task 
+ 								</font></div>
+ 								</div></div>
+ 								
+ 								<button ng-disabled = "form.$invalid m-l-3" >Add Task</button>
+                                
+                                    <font color= "white">       
+                                Search by title or description: </font><input ng-model="search.$">
+ 								 
+								</form>
+                                <button ng-click="clearCompleted()">Clear Completed Tasks</button>
+                                
+    							<ul>
+    							
+    							<table class="searchTextResults">
+    								<tr>
+                                        <th>
+                        
+                                             </th>
+                                         </tr>
+                                        <ul id = "checkboxes">
+    									<li ng-repeat = "todo in todos | filter:search:strict |orderBy:title">
+    										<input type = "checkbox" ng-model= "todo.done" />
+    										<span ng-class="{'done' : todo.done}">
+    											
+    												{{todo.title}}
+    											
+    												{{todo.description}}
+    											
+    												{{todo.date | date:'shortDate'}}
+    											
+    										</span>
+    					
+    									</li>
+    								</table>
+    							</ul>
+    						</ul>
+    					</div>
+    				</div>
+                    </div>
+                                
+                            </div>
+    					</div>
+    				</div>
+            	</div>
+            </div>
+
+    </div>
+    <script>
+    angular.module('ToDo',[]).
+    controller('todoController',['$scope',function($scope){
+    	
+        $scope.todos = [
+    	
+    	];
+
+    	$scope.addTodo = function(){
+        	$scope.todos.push({'title':$scope.newtodo,'description' : $scope.description, 'date':$scope.date,'done':false})
+        	$scope.newtodo= '' 
+            $scope.description = ''
+      }
+    	$scope.clearCompleted = function(){
+    		$scope.todos = $scope.todos.filter(function(item){
+    			return !item.done
+    		})
+    	}
+    }]);
+    </script>
   </body>
+
 </html>
+
